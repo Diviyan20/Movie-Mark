@@ -5,6 +5,7 @@
 }
 
 .search-bar {
+  position: relative;
   max-width: 600px;
   margin: 0 auto 2rem;
   display: flex;
@@ -96,4 +97,27 @@
   padding: 1rem;
   width: 100%;
   box-sizing: border-box;
+}
+
+.suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: #111;
+  border: 1px solid #333;
+  border-top: none;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.suggestion-item {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  color: #fff;
+}
+
+.suggestion-item:hover {
+  background-color: #222;
 }

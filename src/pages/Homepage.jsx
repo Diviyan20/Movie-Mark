@@ -7,11 +7,14 @@ import "../css/Homepage.css";
 function Homepage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [movies, setMovies] = useState([]);
+  const [searchSuggestion, setSearchSuggestion] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
+  //Load popular movies initially
   useEffect(() => {
     const loadPopularMovies = async () => {
       try {
@@ -28,25 +31,57 @@ function Homepage() {
     loadPopularMovies();
   }, []);
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    if (!searchQuery.trim()) return;
-    setLoading(true);
-    if (loading) return;
+  useEffect(() => {
+    const debounceDelay = setTimeout(async () => {
+      if (!searchQuery.trim()) {
+        const popularMovies = await getPopularMovies(1);
+        setMovies(popularMovies);
+        setSearchSuggestion([]);
+        setPage(1);
+        setHasMore(true);
+        setShowSuggestions(false);
+        return;
+      }
 
+      setLoading(true);
+      try {
+        const searchResults = await SearchMovies(searchQuery, 1);
+        setSearchSuggestion(searchResults.slice(0, 5)); //Shows only top 5
+        setShowSuggestions(true);
+        setError(null);
+      } catch (err) {
+        console.log(err);
+        setError("Failed to search movies");
+        setSearchSuggestion([]);
+        setShowSuggestions(false);
+      }
+    }, 400); //Debounce delay in ms
+
+    return () => clearTimeout(debounceDelay);
+  }, [searchQuery]);
+
+  const handleSuggestionClick = async (movie) => {
     try {
-      const searchResults = await SearchMovies(searchQuery);
+      setSearchQuery(movie.title);
+      setShowSuggestions(false);
+      setSearchSuggestion([]);
+      setLoading(true);
+
+      const searchResults = await SearchMovies(movie.title, 1);
       setMovies(searchResults);
+      setPage(1);
+      setHasMore(true);
       setError(null);
     } catch (err) {
       console.log(err);
-      setError("Failed to search movies");
+      setError("Failed to Search Movie....");
     } finally {
       setLoading(false);
     }
   };
 
-  const loadMoreMoves = async (e) => {
+  //Load More movies by clicking Load More Button
+  const loadMoreMovies = async (e) => {
     const nextPage = page + 1;
     try {
       const newMovies = searchQuery
@@ -73,17 +108,33 @@ function Homepage() {
 
   return (
     <div className="homepage">
-      <form onSubmit={handleSearch} className="search-bar">
+      <div className="search-bar">
         <input
           type="text"
           placeholder="Search for Movies...."
           className="search-input"
+          value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
+          onFocus={() => setShowSuggestions(true)}
+          onBlur={() => setTimeout(() => setShowSuggestions(false), 200)} //Delay for click to register
         />
         <button type="submit" className="search-button">
           Search
         </button>
-      </form>
+        {showSuggestions && searchSuggestion.length > 0 && (
+          <ul className="suggestions-dropdown">
+            {searchSuggestion.map((movie) => (
+              <li
+                key={movie.id}
+                className="suggestion-item"
+                onClick={() => handleSuggestionClick(movie)}
+              >
+                {movie.title}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
 
       {error && <div className="error-message">{error}</div>}
 
@@ -97,7 +148,7 @@ function Homepage() {
         </div>
       )}
       <div className="load-button-wrapper">
-        {hasMore && <LoadMoreButton onClick={loadMoreMoves} />}
+        {hasMore && !loading && <LoadMoreButton onClick={loadMoreMovies} />}
       </div>
     </div>
   );

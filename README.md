@@ -1,2 +1,2 @@
-# Flick-Favour
-Repository for the Movie App Flick Favour
+# Movie Mark
+Repository for the Movie App Movie Mark

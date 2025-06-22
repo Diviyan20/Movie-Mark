@@ -34,51 +34,32 @@ function Homepage() {
   useEffect(() => {
     const debounceDelay = setTimeout(async () => {
       if (!searchQuery.trim()) {
+        //Show popular movies again if Input is empty
+
         const popularMovies = await getPopularMovies(1);
         setMovies(popularMovies);
-        setSearchSuggestion([]);
         setPage(1);
         setHasMore(true);
-        setShowSuggestions(false);
         return;
       }
 
       setLoading(true);
       try {
         const searchResults = await SearchMovies(searchQuery, 1);
-        setSearchSuggestion(searchResults.slice(0, 5)); //Shows only top 5
-        setShowSuggestions(true);
+        setMovies(searchResults);
+        setPage(1);
+        setHasMore(true);
         setError(null);
       } catch (err) {
         console.log(err);
-        setError("Failed to search movies");
-        setSearchSuggestion([]);
-        setShowSuggestions(false);
+        setError("Failed to search movies..");
+      } finally {
+        setLoading(false);
       }
-    }, 400); //Debounce delay in ms
+    }, 500); //Debounce delay in ms
 
     return () => clearTimeout(debounceDelay);
   }, [searchQuery]);
-
-  const handleSuggestionClick = async (movie) => {
-    try {
-      setSearchQuery(movie.title);
-      setShowSuggestions(false);
-      setSearchSuggestion([]);
-      setLoading(true);
-
-      const searchResults = await SearchMovies(movie.title, 1);
-      setMovies(searchResults);
-      setPage(1);
-      setHasMore(true);
-      setError(null);
-    } catch (err) {
-      console.log(err);
-      setError("Failed to Search Movie....");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   //Load More movies by clicking Load More Button
   const loadMoreMovies = async (e) => {
@@ -115,8 +96,6 @@ function Homepage() {
           className="search-input"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          onFocus={() => setShowSuggestions(true)}
-          onBlur={() => setTimeout(() => setShowSuggestions(false), 200)} //Delay for click to register
         />
         <button type="submit" className="search-button">
           Search

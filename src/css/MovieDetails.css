@@ -47,33 +47,27 @@
   box-shadow: 0 0 10px rgba(0,0,0,0.6);
 }
 
-
-.cast {
-  margin-top: 2rem;
+.cast-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 16px;
 }
 
-.cast h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  border-bottom: 1px solid #444;
-  padding-bottom: 0.5rem;
+.cast-card {
+  width: 150px;
+  text-align: center;
 }
 
-.cast ul {
-  list-style: none;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1rem;
-}
-
-.cast li {
-  background: #1a1a1a;
-  padding: 1rem;
+.cast-img {
+  width: 100%;
+  height: auto;
   border-radius: 8px;
-  transition: background 0.3s;
+  object-fit: cover;
 }
 
-.cast li:hover {
-  background: #2a2a2a;
+.cast-info {
+  margin-top: 8px;
+  font-size: 0.9rem;
 }
+

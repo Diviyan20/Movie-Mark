@@ -113,18 +113,13 @@ function Homepage() {
 
   return (
     <div className="homepage">
-      <div className="search-bar">
+      <div className="search-controls">
         <input
           type="text"
-          placeholder="Search for Movies...."
-          className="search-input"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          class="search-input"
+          placeholder="Search for Movies..."
         />
-        <button type="submit" className="search-button">
-          Search
-        </button>
-
+        <button class="search-button">Search</button>
         <FilterDropdown filter={filter} setFilter={setFilter} />
       </div>
 

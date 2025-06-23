@@ -18,3 +18,17 @@ export const SearchMovies = async (query, page = 1) => {
   const data = await response.json();
   return data.results;
 };
+
+export const getMovieDetails = async (movieId) => {
+  const res = await fetch(`${BASE_URL}/movie/${movieId}?api_key=${API_KEY}`);
+  if (!res.ok) throw new Error("Failed to fetch movie details");
+  return res.json();
+};
+
+export const getMovieCredits = async (movieId) => {
+  const res = await fetch(
+    `${BASE_URL}/movie/${movieId}/credits?api_key=${API_KEY}`
+  );
+  if (!res.ok) throw new Error("Failed to fetch movie credits");
+  return res.json();
+};

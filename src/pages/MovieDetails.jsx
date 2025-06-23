@@ -96,13 +96,25 @@ function MovieDetails() {
             </div>
           )}
           <h2>Cast</h2>
-          <ul>
+          <div className="cast-grid">
             {cast?.map((actor) => (
-              <li key={actor.id}>
-                <strong>{actor.name}</strong> as {actor.character}
-              </li>
+              <div key={actor.id} className="cast-card">
+                <img
+                  src={
+                    actor.profile_path
+                      ? `https://image.tmdb.org/t/p/w185${actor.profile_path}`
+                      : "https://via.placeholder.com/185x278?text=No+Image"
+                  }
+                  alt={actor.name}
+                  className="cast-img"
+                />
+                <div className="cast-info">
+                  <strong>{actor.name}</strong>
+                  <p>as {actor.character}</p>
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       </div>
     </div>

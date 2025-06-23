@@ -126,19 +126,6 @@ function Homepage() {
         </button>
 
         <FilterDropdown filter={filter} setFilter={setFilter} />
-        {showSuggestions && searchSuggestion.length > 0 && (
-          <ul className="suggestions-dropdown">
-            {searchSuggestion.map((movie) => (
-              <li
-                key={movie.id}
-                className="suggestion-item"
-                onClick={() => handleSuggestionClick(movie)}
-              >
-                {movie.title}
-              </li>
-            ))}
-          </ul>
-        )}
       </div>
 
       {error && <div className="error-message">{error}</div>}

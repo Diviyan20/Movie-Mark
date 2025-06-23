@@ -1,28 +1,53 @@
 import { useParams } from "react-router-dom";
-import { getMovieCredits, getMovieDetails } from "../services/api";
+import {
+  getMovieCredits,
+  getMovieDetails,
+  getMovieVideos,
+} from "../services/api";
 import { useEffect, useState } from "react";
 import "../css/MovieDetails.css";
 
 function MovieDetails() {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
+  const [trailer, setTrailer] = useState(null);
   const [credits, setCredits] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchMovie = async () => {
+    const loadDetails = async () => {
       try {
-        const data = await getMovieDetails(id);
-        const creditData = await getMovieCredits(id);
-        setMovie(data);
-        setCredits(creditData);
+        const [movieData, videoData, creditsData] = await Promise.all([
+          getMovieDetails(id),
+          getMovieVideos(id),
+          getMovieCredits(id),
+        ]);
+
+        setMovie(movieData);
+        setCredits(creditsData);
+
+        //Find official trailer from Youtube
+        const officialTrailer = videoData.find(
+          (vid) =>
+            vid.type === "Trailer" &&
+            vid.site === "YouTube" &&
+            vid.official === true
+        );
+
+        //Fallback if no official trailer exists
+        if (!officialTrailer && videoData.length > 0) {
+          const ytTrailer = videoData.find((vid) => vid.site === "Youtube");
+          setTrailer(ytTrailer);
+        } else {
+          setTrailer(officialTrailer);
+        }
       } catch (err) {
         console.log(err);
-        setError("Failed to load movie...");
+        setError("Failed to load movie details...");
       }
     };
 
-    fetchMovie();
+    loadDetails();
   }, [id]);
 
   if (error) return <div>{error}</div>;
@@ -55,6 +80,21 @@ function MovieDetails() {
           <strong>Overview:</strong> {movie.overview}
         </p>
         <div className="cast">
+          {trailer && (
+            <div className="trailer-section">
+              <h2>Play Trailer</h2>
+              <div className="trailer-video">
+                <iframe
+                  width="100%"
+                  height="400"
+                  src={`https://www.youtube.com/embed/${trailer.key}`}
+                  title="YouTube trailer"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            </div>
+          )}
           <h2>Cast</h2>
           <ul>
             {cast?.map((actor) => (

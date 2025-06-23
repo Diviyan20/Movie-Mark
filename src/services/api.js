@@ -32,3 +32,11 @@ export const getMovieCredits = async (movieId) => {
   if (!res.ok) throw new Error("Failed to fetch movie credits");
   return res.json();
 };
+
+export const getMovieVideos = async (id) => {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${API_KEY}`
+  );
+  const data = await response.json();
+  return data.results; // returns array of video objects
+};

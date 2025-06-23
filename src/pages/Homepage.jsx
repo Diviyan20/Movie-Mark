@@ -69,9 +69,9 @@ function Homepage() {
         } else if (filter === "a-z") {
           searchResults.sort((a, b) => a.title.localeCompare(b.title));
         }
-        setSearchSuggestion(searchResults.slice(0, 5));
-        setShowSuggestions(true);
-        setError(null);
+        setMovies(searchResults);
+        setPage(1);
+        setHasMore(true);
       } catch (err) {
         console.log(err);
         setError("Failed to search movies..");

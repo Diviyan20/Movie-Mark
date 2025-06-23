@@ -35,6 +35,19 @@
   color: #f39c12;
 }
 
+.trailer-section {
+  margin-top: 2rem;
+}
+
+.trailer-video {
+  width: 100%;
+  max-width: 800px;
+  aspect-ratio: 16 / 9;
+  margin: 0 auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.6);
+}
+
+
 .cast {
   margin-top: 2rem;
 }

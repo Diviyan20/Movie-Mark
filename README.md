@@ -14,7 +14,7 @@ MovieMark is a sleek and responsive movie browsing web application powered by **
 ### 🎞 Movie Browsing & Discovery
 - Fetches data from TMDB API and displays trending, popular, or top-rated movies.
 - Responsive grid layout that adapts across devices.
-- Loaded movie posters with polished animations.
+- Lazy-Loaded movie posters with polished animations.
 
 ### ❤️ Favourites System
 - Add or remove favourites with a single click (heart toggle).

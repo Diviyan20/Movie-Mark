@@ -58,6 +58,18 @@ MovieMark is a sleek and responsive movie browsing web application powered by **
 
 ---
 
+## Screenshots
+### Homepage 
+![ss 1](https://github.com/user-attachments/assets/f78ffe5a-2913-4e6b-a68a-ae41b6160bd0)
+
+### Favourites
+![ss 2](https://github.com/user-attachments/assets/70b70c16-de81-428c-bf21-50e0328de96a)
+
+### Movie Details, Cast and Trailer
+![ss 3](https://github.com/user-attachments/assets/47ca7e69-a706-4658-a2eb-a4b2ff8d32bc)
+
+---
+
 ## Project Deployment
 Try out the website here: https://movie-mark.vercel.app/
 
